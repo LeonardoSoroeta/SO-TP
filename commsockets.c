@@ -79,13 +79,13 @@ Connection * comm_accept(Listener * listener) {
 
 int comm_write(Connection * connection, char * dataToWrite, int size) {
 
-    return write(connection->outgoing_fd, dataToWrite, sizeof(Data));
+    return write(connection->outgoing_fd, dataToWrite, size);
 
 }
 
 int comm_read(Connection * connection, char * dataToRead, int size) {
 
-    return read(connection->incoming_fd, dataToRead, sizeof(Data));
+    return read(connection->incoming_fd, dataToRead, size);
 
 }
 
