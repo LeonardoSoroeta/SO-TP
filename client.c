@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 
 #include "types.h"
 #include "comm.h"
@@ -9,31 +10,40 @@
 
 int main(int argc, char *argv[]) {
 
+    int counter = 0;
     Data * data;
     Data * serverResponse;
     Connection * connection;
     char * address = "/tmp/listener";
 
-    //Simulating client request and Data
     data = malloc(sizeof(Data));
-
     data->size = sizeof(Data);
-    data->opcode = 666;
     data->client_pid = getpid();
 
     /*        */printf("[client] connecting to server on address %s\n", address);
 
     connection = comm_connect(address);
 
-    /*        */printf("[client] connection established. sending data with opcode 666\n");
+    /*        */printf("[client] connection established. sending data\n");
 
-    sendData(connection, data);
+    while(counter < 200) {
 
-    /*        */printf("[client] data sent. awaiting response\n");
+	sleep(1);
 
-    serverResponse = receiveData(connection);
+        data->opcode = counter;
 
-    /*        */printf("[client] data received. opcode: %d\n", serverResponse->opcode);
+        sendData(connection, data);
+
+        /*        */printf("[client] sent counter = %d\n", counter);
+
+        serverResponse = receiveData(connection);
+
+	counter = serverResponse->opcode;
+
+        /*        */printf("[client] received counter = %d\n", counter);
+
+	counter += 5;
+    }
 
     /*        */printf("[client] done\n");
 

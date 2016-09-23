@@ -39,20 +39,30 @@ int main(int argc, char *argv[])
 
 void newSession(Connection * connection) {
 
+	int counter = 0;	
+	
 	Data * data;
 
 	/*        */printf("[session %d] new client session started\n", getpid());
 
 
-	data = receiveData(connection);
+	while(counter < 190) {
 
-	/*        */printf("[session %d] data received. opcode = %d\n", getpid(), data->opcode);
+		data = receiveData(connection);
 
-	data->opcode = 999;
+		counter = data->opcode;
 
-	/*        */printf("[session %d] sending response with opcode = 999\n", getpid());
+		/*        */printf("[session %d] received counter = %d\n", getpid(), counter);
 
-	sendData(connection, data);
+		counter += 5;
+
+		data->opcode = counter;
+
+		/*        */printf("[session %d] sending counter = %d\n", getpid(), counter);
+
+		sendData(connection, data);
+
+	}
 
 	/*        */printf("[session %d] session done\n", getpid());
 
