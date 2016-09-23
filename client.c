@@ -12,9 +12,7 @@ int main(int argc, char *argv[]) {
     Data * data;
     Data * serverResponse;
     Connection * connection;
-    Address address;
-
-    address.filename = "/tmp/listener";
+    char * address = "/tmp/listener";
 
     //Simulating client request and Data
     data = malloc(sizeof(Data));
@@ -23,11 +21,11 @@ int main(int argc, char *argv[]) {
     data->opcode = 666;
     data->client_pid = getpid();
 
-    /*        */printf("[client] connecting to server on address %s\n", address.filename);
+    /*        */printf("[client] connecting to server on address %s\n", address);
 
-    connection = comm_connect(&address);
+    connection = comm_connect(address);
 
-    /*        */printf("[client] connection established. sending data\n");
+    /*        */printf("[client] connection established. sending data with opcode 666\n");
 
     sendData(connection, data);
 

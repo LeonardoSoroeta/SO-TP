@@ -1,27 +1,13 @@
 #ifndef _COMMUNICATION_H
 #define _COMMUNICATION_H
 
-typedef struct {
+typedef struct Connection Connection;
 
-	int incoming_fd, outgoing_fd;
+typedef struct Listener Listener;
 
-} Connection;
+Connection * comm_connect(char * address);
 
-typedef struct {
-
-	char * filename;
-
-} Address;
-
-typedef struct {
-
-	int listener_fd;
-
-} Listener;
-
-Connection * comm_connect(Address * address);
-
-Listener * comm_listen(Address * address);
+Listener * comm_listen(char * address);
 
 Connection * comm_accept(Listener * listener);
 

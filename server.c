@@ -13,10 +13,9 @@ int main(int argc, char *argv[])
 	int newpid;
 	Listener * listener;
 	Connection * connection;
-	Address address;
+	char * address = "/tmp/listener";
 
-	address.filename = "/tmp/listener";
-	listener = comm_listen(&address);
+	listener = comm_listen(address);
 
 	/*        */printf("[server] awaiting connection requests\n");
 
@@ -44,9 +43,9 @@ void newSession(Connection * connection) {
 
 	/*        */printf("[session %d] new client session started\n", getpid());
 
+
 	data = receiveData(connection);
 
-	/*        */printf("[session %d] receiving data from client %d\n", getpid(), data->client_pid);
 	/*        */printf("[session %d] data received. opcode = %d\n", getpid(), data->opcode);
 
 	data->opcode = 999;
@@ -54,8 +53,6 @@ void newSession(Connection * connection) {
 	/*        */printf("[session %d] sending response with opcode = 999\n", getpid());
 
 	sendData(connection, data);
-
-	/*        */printf("[session %d] response sent\n", getpid());
 
 	/*        */printf("[session %d] session done\n", getpid());
 
